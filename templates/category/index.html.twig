@@ -1,23 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CategoryController!{% endblock %}
+{% block title %}Hello CategoryController!
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+	<main class="container">
+		<div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
+			<div class="col-md-6 px-0">
+				<h1 class="display-4 fst-italic">Title of a longer featured blog post</h1>
+				<p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what’s most interesting in this post’s contents.</p>
+				<p class="lead mb-0">
+					<a href="#" class="text-white fw-bold">Continue reading...</a>
+				</p>
+			</div>
+		</div>
 
-<div class="example-wrapper">
-    {% for post in posts %}
-        <p>{{ post.title|e }}</p>
-    {% endfor %}
-    <h1>Hello {{ controller_name }}! ✅</h1>
+		<div class="row mb-2">
+			{% if posts %}
+				{% for post in posts %}
+					<div class="col-md-6">
+						<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+							<div class="col p-4 d-flex flex-column position-static">
+								<h3 class="mb-0">{{ post.title|u.truncate(50, '...') }}</h3>
+								<div class="mb-1 text-muted">Nov 12</div>
+								<p class="card-text mb-auto">{{ post.body|u.truncate(80, '...') }}</p>
+								<a href="/post/{{ post.id }}">View</a>
+							</div>
+							<div class="col-auto d-none d-lg-block">
+								<svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveaspectratio="xMidYMid slice" focusable="false">
+									<title>Placeholder</title>
+									<rect width="100%" height="100%" fill="#55595c"></rect>
+									<text x="30%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+								</svg>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp64/www/blog/src/Controller/CategoryController.php'|file_link(0) }}">src/Controller/CategoryController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp64/www/blog/templates/category/index.html.twig'|file_link(0) }}">templates/category/index.html.twig</a></code></li>
-    </ul>
-</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			{% else %}
+				<div class="alert alert-info" role="alert">
+					No hay articulos para mostrar!
+				</div>
+			{% endif %}
+		</div>
+	</main>
 {% endblock %}
+
