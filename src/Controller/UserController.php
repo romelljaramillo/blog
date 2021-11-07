@@ -63,7 +63,24 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("api/users/{id}", name="user", methods={"GET"})
+     * @Route("/api/users", name="api_users", methods={"GET"})
+     */
+    public function getUsersApi(): Response
+    {
+        $users = [];
+
+        $url_api = $this->getParameter('api_url') . '/users';
+        $response = $this->http->request('GET', $url_api);
+        $statusCode = $response->getStatusCode();
+
+        if($statusCode == 200) {
+            $users = $response->toArray();
+        }
+        return new JsonResponse($users, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/api/users/{id}", name="api_user", methods={"GET"})
      */
     public function getUserByIdApi(string $id): JsonResponse
     {

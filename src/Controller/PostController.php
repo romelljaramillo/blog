@@ -19,9 +19,30 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/post/{id}", name="post", requirements={"id"="\d+"})
+     * @Route("/posts", name="posts")
      */
-    public function index(string $id): Response
+    public function index(): Response
+    {
+        $posts = [];
+        $array_post = [];
+
+        $url_api = $this->getParameter('api_url') . '/posts';
+        $response = $this->http->request('GET', $url_api);
+        $statusCode = $response->getStatusCode();
+
+        if($statusCode == 200) {
+            $posts = $response->toArray();
+        }
+
+        return $this->render('post/index.html.twig', [
+            'posts' => $posts
+        ]);
+    }
+
+    /**
+     * @Route("/posts/{id}", name="post", requirements={"id"="\d+"})
+     */
+    public function getPost(string $id): Response
     {
         $post = [];
         $user = [];
@@ -35,14 +56,13 @@ class PostController extends AbstractController
             $user = $this->getUserApi($id);
         }
 
-        return $this->render('post/index.html.twig', [
+        return $this->render('post/post.html.twig', [
             'controller_name' => 'Post',
             'post' => $post,
             'user' => $user
         ]);
     }
 
-    
     /**
      * returns user information
      *
@@ -66,9 +86,28 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("api/posts/{id}", name="posts", methods={"GET"})
+     * @Route("/api/posts", name="api_posts", methods={"GET"})
      */
-    public function getPostsApi(string $id): JsonResponse
+    public function getPostsApi(): JsonResponse
+    {
+        $posts = [];
+        $array_post = [];
+
+        $url_api = $this->getParameter('api_url') . '/posts';
+        $response = $this->http->request('GET', $url_api);
+        $statusCode = $response->getStatusCode();
+
+        if($statusCode == 200) {
+            $posts = $response->toArray();
+        }
+
+        return new JsonResponse($posts, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/api/posts/{id}", name="api_post", methods={"GET"})
+     */
+    public function getPostApi(string $id): JsonResponse
     {
         $post = [];
         $user = [];
